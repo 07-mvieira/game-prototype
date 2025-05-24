@@ -7,25 +7,29 @@
     <title>Em execução...</title>
 </head>
 <body>
+    <button id="start" onclick="gameStart()">Iniciar jogo</button>
 <main id="game">
-    <div id="timer-div">
-        <p id="timer">60</p>
+
+    <p id="timer">120</p>
+
+    <div id="player" class="object">
+        <img id="player-graphics" src="assets/player-placeholder.jpg">
     </div>
 
-    <div id="player">
-        <img id="player-graphics" href="">
+    <div class="swing object">
+        <img id="swing-graphics" src="assets/swing-placeholder.jpg">
     </div>
 
-    <div class="coin">
-        <img id="coin-graphics" href="">
+    <div class="coin object">
+        <img id="coin-graphics" src="assets/coin-placeholder.jpg">
     </div>
 
-    <div class="enemy">
-        <img id="enemy-graphics" href="">
+    <div class="enemy object">
+        <img id="enemy-graphics" src="assets/enemy-placeholder.jpg">
     </div>
 
-    <div class="projectile">
-        <img id="projectile-graphics" href="">
+    <div class="projectile object">
+        <img id="projectile-graphics" src="assets/projectile-placeholder.jpg">
     </div>
 
 </main>

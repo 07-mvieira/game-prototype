@@ -1,5 +1,50 @@
-*{
+* {
     margin: 0;
     padding: 0;
-    position: absolute;
+}
+
+body{
+    background-image: url("assets/bg.jpg");
+    background-repeat: repeat;
+    background-size: 4%;
+}
+
+#start {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    height: 4.5vw;
+    width: 16vw;
+    font-size: 2.4vw;
+
+    border-radius: 1vw;
+    cursor: pointer;
+}
+
+#game > * {
+    position: fixed;
+}
+
+#timer {
+    top: 1vw;
+    left: 1.2vw;
+    font-size: 3vw;
+
+    display: none;
+}
+
+.object {
+    display: none;
+}
+
+#player {
+    height: 4vw;
+    width: 4vw;
+}
+
+#player-graphics {
+    max-width: 100%;
+    max-height: 100%;
 }
