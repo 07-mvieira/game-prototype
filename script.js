@@ -18,8 +18,8 @@ const Player = {
     vis: document.getElementById("player-graphics"),
     x: 50,
     y: 50,
-    Xvelocity: 0.9,
-    Yvelocity: 0.9 * (window.innerWidth / window.innerHeight),
+    Xvelocity: 0.2,
+    Yvelocity: 0.2 * (window.innerWidth / window.innerHeight),
     facing: 2
 }
 
