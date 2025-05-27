@@ -34,6 +34,8 @@ body{
     font-size: 3vw;
 
     display: none;
+
+    z-index: 99;
 }
 
 img {
@@ -45,7 +47,7 @@ img {
     display: none;
 }
 
-#player {
+#player, .enemy, .coin {
     height: 4vw;
     width: 4vw;
 }
