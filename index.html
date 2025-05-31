@@ -4,22 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Em execução...</title>
+    <title>Colour Arena</title>
 </head>
 <body>
     <button id="start" onclick="gameStart()">Iniciar jogo</button>
+    <div id="results-vis">
+        <div id="results">
+            <p id="msg">Você morreu!</p>
+            <p id="enemies-end">Inimigos derrotados: </p>
+            <p id="coins-end">Moedas coletadas: </p>
+            <button id="reset" onclick="reset()">Voltar ao início</button>
+        </div>
+    </div>
 <main id="game">
 
-    <p id="timer">120</p>
+    <div id="ui">
+        <p id="timer"></p>
+        <p id="enemies">Inimigos: 0</p>
+        <p id="coins">Moedas: 0</p>
+    </div>
 
-    <div id="player" class="object">
+    <div id="player">
         <img id="player-graphics" src="assets/player-placeholder-down.jpg">
     </div>
-
-    <div class="projectile object">
-        <img id="projectile-graphics" src="assets/projectile-placeholder.jpg">
-    </div>
-
 </main>
 <script src="script.js"></script>
 </body>

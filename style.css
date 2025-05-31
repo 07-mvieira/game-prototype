@@ -2,6 +2,10 @@
     margin: 0;
     padding: 0;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 body{
@@ -16,26 +20,83 @@ body{
     left: 50%;
     transform: translate(-50%, -50%);
 
-    height: 4.5vw;
     width: 16vw;
+    height: 4.5vw;
     font-size: 2.4vw;
 
     border-radius: 1vw;
     cursor: pointer;
 }
 
+#results-vis {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 24vw;
+    height: 20vw;
+    padding: 0vw;
+
+    background-color: #ddd;
+    border-radius: 1vw;
+}
+#results {
+    display: flex;
+    flex-direction: column;
+
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    height: 20vw;
+}
+
+#results p, #results button {
+    display: block;
+    text-align: center;
+    margin: 0.8vw;
+}
+
+#coins-end, #enemies-end {
+    font-size: 1.4vw
+}
+
+#msg {
+    font-weight: bolder;
+    font-size: 2.3vw;
+    color: #b82e00; /*#b82e00, #00a1d7*/
+}
+
+#reset {
+    height: 4.2vw;
+    width: 15vw;
+    font-size: 1.7vw;
+
+    cursor: pointer;
+    border-radius: 1vw;
+
+}
+
+
 #game > * {
     position: fixed;
 }
 
-#timer {
+#ui {
     top: 1vw;
     left: 1.2vw;
-    font-size: 3vw;
 
     display: none;
-
     z-index: 99;
+}
+
+#timer {
+    font-size: 3vw;
+}
+
+#stats{
+    top: 2vw;
 }
 
 img {
@@ -43,11 +104,16 @@ img {
     max-height: 100%;
 }
 
-.object {
+#player {
     display: none;
 }
 
 #player, .enemy, .coin {
     height: 4vw;
     width: 4vw;
+}
+
+.projectile {
+    width: 1.2vw;
+    height: 1.2vw;
 }

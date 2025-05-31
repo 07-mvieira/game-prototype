@@ -1,3 +1,5 @@
+// console.log(window.innerWidth, window.innerHeight)
+
 let pressedKeys = [];
 let previousPressedKeys = [];
 
@@ -6,7 +8,18 @@ window.onkeydown = function(e) {pressedKeys[e.code] = true;}
 
 const canvas = document.getElementById("game")
 
-console.log(window.innerWidth, window.innerHeight)
+const startButton = document.getElementById("start")
+
+const ui = document.getElementById("ui")
+const timer = document.getElementById("timer")
+
+let coinCounter = 0
+const coinCounterEl = document.getElementById("coins")
+
+let enemyCounter = 0
+const enemyCounterEl = document.getElementById("enemies")
+
+const resultsScreen = document.getElementById("results-vis")
 
 const Player = {
     obj: document.getElementById("player"),
@@ -19,41 +32,88 @@ const Player = {
     frozen: false
 }
 
-/*let playerPixelPosition = {
-    x: Player.obj.offsetLeft,
-    y: Player.obj.offsetTop
-};*/
+let playerDefeated = false;
 
-let enemyID = 0;
-let coinID = 0;
+let playerRect;
 
 let swingTimeout;
 
-const timer = document.getElementById("timer")
-
-const startButton = document.getElementById("start")
+let timerCountdown = 0;
 
 let enemyRNG;
 let coinRNG;
 let countdownID;
 
-const enemyIDs = []
-const coinIDs = []
+let enemyID = 0;
+let coinID = 0;
+let projectileID = 0;
 
-function draw(){ // coordenadas dos objetos
+let enemyIDs = []
+let enemyRects = []
+
+let coinIDs = []
+let coinRects = []
+
+let projectileIDs = []
+let projectileRects = []
+
+// coordenadas do jogador
+function draw(){
     Player.obj.style.left = Player.x + "%"
     Player.obj.style.top = Player.y + "%"
 }
 
+function results(){
+    Player.obj.style.display = `none`;
+    ui.style.display = `none`;
+
+    resultsScreen.style.display = `block`;
+    document.getElementById("coins-end").innerHTML = `Moedas coletadas: ${coinCounter}`
+    document.getElementById("enemies-end").innerHTML = `Inimigos derrotados: ${enemyCounter}`
+
+    coinCounter = 0
+    enemyCounter = 0
+
+    if (!playerDefeated) {
+        document.getElementById("msg").innerHTML = `Você venceu!`
+        document.getElementById("msg").style.color = `#00a1d7`
+    } else {
+        document.getElementById("msg").innerHTML = `Você morreu!`
+        document.getElementById("msg").style.color = `#b82e00`
+    }
+
+    document.querySelectorAll('.enemy').forEach(e => e.remove());
+    enemyIDs = []
+    enemyRects = []
+    
+    document.querySelectorAll('.coin').forEach(e => e.remove());
+    coinIDs = []
+    coinRects = []
+
+    if (document.getElementById("swing") != null){
+        document.getElementById("swing").remove()
+    }
+}
+
+function reset(){
+    resultsScreen.style.display = `none`;
+    startButton.style.display = `block`;
+}
+
 function gameStart() {
+    timerCountdown = 60
+    coinCounterEl.innerHTML = `Moedas: ${enemyCounter}`
+    enemyCounterEl.innerHTML = `Inimigos: ${enemyCounter}`
+
     startButton.style.display = `none`;
-    timer.style.display = `block`;
+    ui.style.display = `block`;
 
     Player.obj.style.display = `block`;
     Player.vis.src = `assets/player-placeholder-down.jpg`
     Player.obj.style.top = `50%`; Player.obj.style.left = `50%`; Player.obj.style.transform = `translate(-50%, -50%)`
+    Player.x = 50; Player.y = 50;
 
-    timer.innerHTML = 99
+    timer.innerHTML = timerCountdown
 
     function countdownTimer() {
         countdownID = setInterval(countdown, 1000);
@@ -61,11 +121,13 @@ function gameStart() {
     countdownTimer()
 
     function countdown() {
-        timer.innerHTML = timer.innerHTML - 1
-        enemyRNG = Math.floor(Math.random() * 4); // 0-3
-        coinRNG = Math.floor(Math.random() * 8); // 0-7
+        timerCountdown -= 1
+        timer.innerHTML = timerCountdown
 
-        if (enemyRNG == 0) {
+        enemyRNG = Math.floor(Math.random() * 3); // 0-2
+        coinRNG = Math.floor(Math.random() * 7); // 0-6
+        // cria inimigos
+        if (timerCountdown > 0 && enemyRNG == 0) {
             const Enemy = {
                 obj: document.createElement("div"),
                 vis: document.createElement("img")
@@ -73,7 +135,7 @@ function gameStart() {
 
             Enemy.vis.src = `assets/enemy-placeholder.jpg`;
             Enemy.obj.setAttribute('class', 'enemy');
-            Enemy.obj.setAttribute('id', enemyID);
+            Enemy.obj.setAttribute('id', `enemy-${enemyID}`);
 
             Enemy.obj.style.left = `calc(${Math.random() * 92}%`;
             Enemy.obj.style.top = `${Math.random() * 92}%`;
@@ -81,11 +143,18 @@ function gameStart() {
             canvas.appendChild(Enemy.obj)
             Enemy.obj.appendChild(Enemy.vis)
             
-            enemyIDs.push[enemyID]
+            enemyIDs.push(document.getElementById(Enemy.obj.id))
+
+            let lastEnemyID = enemyIDs.slice(-1)[0]; // seleciona a última ID dentro do array
+            let lastEnemyRect = lastEnemyID.getBoundingClientRect(); // captura as coordenadas do elemento q corresponde a essa ID
+
+            enemyRects.push(lastEnemyRect)
+            
             enemyID++;
         }
 
-        if (coinRNG == 0) {
+        // cria moedas
+        if (timerCountdown > 0 && coinRNG == 0) {
             const Coin = {
                 obj: document.createElement("div"),
                 vis: document.createElement("img")
@@ -93,7 +162,7 @@ function gameStart() {
 
             Coin.vis.src = `assets/coin-placeholder.jpg`;
             Coin.obj.setAttribute('class', 'coin');
-            Coin.obj.setAttribute('id', coinID);
+            Coin.obj.setAttribute('id', `coin-${coinID}`);
 
             Coin.obj.style.left = `calc(${Math.random() * 92}%`;
             Coin.obj.style.top = `${Math.random() * 92}%`;
@@ -101,9 +170,41 @@ function gameStart() {
             canvas.appendChild(Coin.obj)
             Coin.obj.appendChild(Coin.vis)
             
-            enemyIDs.push[coinID]
+            coinIDs.push(document.getElementById(Coin.obj.id))
+
+            let lastCoinID = coinIDs.slice(-1)[0]; // seleciona a última ID dentro do array
+            let lastCoinRect = lastCoinID.getBoundingClientRect(); // captura as coordenadas do elemento q corresponde a essa ID
+
+            coinRects.push(lastCoinRect)
+
             coinID++;
         }
+        // cria projéteis (WIP!!!)
+        /*if (timerCountdown % 2 == 0) {
+            const Projectile = {
+                obj: document.createElement("div"),
+                vis: document.createElement("img")
+            }
+            for (let i = 0; i < enemyRects.length; i++){
+                // up
+                Projectile.vis.src = `assets/projectile-placeholder.jpg`;
+                Projectile.obj.setAttribute('class', 'projectile');
+                Projectile.obj.setAttribute('id', `projectile-${projectileID}`);
+
+                Projectile.obj.style.left = `calc(${enemyRects[i].x} - 1.2vw / 2)`
+                Projectile.obj.style.top = `calc(${enemyRects[i].y} - 1.2vw * 2)`
+
+                canvas.appendChild(Projectile.obj),
+                Projectile.obj.appendChild(Projectile.vis)
+
+                projectileID++
+                // right
+
+                // down
+
+                // left
+            }
+        }*/
     }
 
     gameLoop();
@@ -111,7 +212,7 @@ function gameStart() {
 
 function gameLoop() {
     // posição do jogador em pixels
-    const playerRect = Player.obj.getBoundingClientRect;
+    let playerRect = Player.obj.getBoundingClientRect();
 
     // movimento do personagem com setinhas
     if (!Player.frozen) {
@@ -159,7 +260,7 @@ function gameLoop() {
     if (pressedKeys["Space"] && !Player.frozen){
         Player.frozen = true
 
-        const Swing = {
+        let Swing = {
             obj: document.createElement("div"),
             vis: document.createElement("img")
         }
@@ -213,6 +314,26 @@ function gameLoop() {
             break;
         }
 
+        let swingRect = Swing.obj.getBoundingClientRect();
+
+        if (enemyRects.length >= 1) {
+        for (let i = 0; i < enemyRects.length; i++){
+            if (
+                enemyRects[i] != undefined &&
+                enemyRects[i].top < swingRect.bottom &&
+                enemyRects[i].left < swingRect.right &&
+                enemyRects[i].bottom > swingRect.top &&
+                enemyRects[i].right > swingRect.left
+            ) {
+                enemyIDs[i].remove()
+                delete enemyRects[i];
+
+                enemyCounter += 1
+                enemyCounterEl.innerHTML = `Inimigos: ${enemyCounter}`
+                }
+            }
+        }   
+
         function clearSwingTimer(){
             swingTimeout = setTimeout(clearSwing, 300)
         }
@@ -230,7 +351,47 @@ function gameLoop() {
         clearInterval(countdownID)
     }
 
-    // funções de atualização
+    // colisão entre o jogador e as moedas individuais
+    if (coinRects.length >= 1) { // executar apenas depois que tiver pelo menos uma moeda viva
+        for (let i = 0; i < coinRects.length; i++){ // executar uma vez para cada moeda dentro do array
+            if (
+                coinRects[i] != undefined &&
+                coinRects[i].top < playerRect.bottom &&
+                coinRects[i].left < playerRect.right &&
+                coinRects[i].bottom > playerRect.top &&
+                coinRects[i].right > playerRect.left
+            ) {
+                coinIDs[i].remove()
+                delete coinRects[i];
+
+                coinCounter += 1
+                coinCounterEl.innerHTML = `Moedas: ${coinCounter}`
+            }
+        }
+    }
+
+    if (enemyRects.length >= 1) {
+        for (let i = 0; i < enemyRects.length; i++){
+            if (
+                enemyRects[i] != undefined &&
+                enemyRects[i].top < playerRect.bottom &&
+                enemyRects[i].left < playerRect.right &&
+                enemyRects[i].bottom > playerRect.top &&
+                enemyRects[i].right > playerRect.left
+            ) {
+                playerDefeated = true;
+                results();
+                timerCountdown = 0;
+                return;
+            }
+        }
+    }
+
+    if (timerCountdown <= 0) {
+        results();
+        return;
+    }
+
     draw();
     requestAnimationFrame(gameLoop);
 }
