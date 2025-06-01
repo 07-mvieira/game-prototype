@@ -73,6 +73,7 @@ o jogo usa o mouse na navegação das telas, mas tirando isso, é controlado com
 
 - fazer com que os inimigos lancem projéteis móveis
 - melhorar o spawn de inimigos (eles podem nascer em cima do jogador sem que ele possa fazer nada)
+- corrigir crescente instabilidade do timer da segunda execução em diante
 
 <a name="creditos"/>
 
