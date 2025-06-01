@@ -1,5 +1,5 @@
 # 🟦squarena🟧
-jogo simples de sobrevivência
+jogo singleplayer simples de sobrevivência
 
 ## 🧾 sumário
 - [sobre o jogo](#sobre)
