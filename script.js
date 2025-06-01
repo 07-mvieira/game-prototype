@@ -124,8 +124,8 @@ function gameStart() { // sistemas que não podem ser repetidos instantaneamente
         timer.innerHTML = timerCountdown
 
         // spawn dos inimigos e moedas
-        enemyRNG = Math.floor(Math.random() * 3); // 0-2
-        coinRNG = Math.floor(Math.random() * 7); // 0-6
+        enemyRNG = Math.floor(Math.random() * 2); // 0-1
+        coinRNG = Math.floor(Math.random() * 6); // 0-5
 
         // cria inimigos
         if (timerCountdown > 0 && enemyRNG == 0) {
