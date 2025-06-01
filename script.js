@@ -3,7 +3,7 @@
 let pressedKeys = [];
 let previousPressedKeys = [];
 
-window.onkeyup   = function(e) {pressedKeys[e.code] = false;}
+window.onkeyup = function(e) {pressedKeys[e.code] = false;}
 window.onkeydown = function(e) {pressedKeys[e.code] = true;}
 
 const canvas = document.getElementById("game")
@@ -29,33 +29,30 @@ const Player = {
     Xvelocity: 0.2,
     Yvelocity: 0.2 * (window.innerWidth / window.innerHeight),
     facing: 2,
-    frozen: false
+    frozen: false // parar durante o ataque
 }
 
 let playerDefeated = false;
 
-let playerRect;
+let playerRect; // colisão do jogador, definida depois
 
 let swingTimeout;
 
 let timerCountdown = 0;
 
-let enemyRNG;
-let coinRNG;
-let countdownID;
+let enemyRNG; // controla spawn de inimigos
+let coinRNG; // controla spawn de moedas
+let countdownID; // controla timer/spawns
 
+// lidar com mais de um objeto ao mesmo tempo
 let enemyID = 0;
 let coinID = 0;
-let projectileID = 0;
 
-let enemyIDs = []
-let enemyRects = []
+let enemyIDs = [] // elementos
+let enemyRects = [] // colisões
 
 let coinIDs = []
 let coinRects = []
-
-let projectileIDs = []
-let projectileRects = []
 
 // coordenadas do jogador
 function draw(){
@@ -63,6 +60,7 @@ function draw(){
     Player.obj.style.top = Player.y + "%"
 }
 
+// game over ou vitória
 function results(){
     Player.obj.style.display = `none`;
     ui.style.display = `none`;
@@ -100,7 +98,7 @@ function reset(){
     startButton.style.display = `block`;
 }
 
-function gameStart() {
+function gameStart() { // sistemas que não podem ser repetidos instantaneamente
     timerCountdown = 60
     coinCounterEl.innerHTML = `Moedas: ${enemyCounter}`
     enemyCounterEl.innerHTML = `Inimigos: ${enemyCounter}`
@@ -108,6 +106,7 @@ function gameStart() {
     startButton.style.display = `none`;
     ui.style.display = `block`;
 
+    // setup do jogador
     Player.obj.style.display = `block`;
     Player.vis.src = `assets/player-placeholder-down.jpg`
     Player.obj.style.top = `50%`; Player.obj.style.left = `50%`; Player.obj.style.transform = `translate(-50%, -50%)`
@@ -115,7 +114,7 @@ function gameStart() {
 
     timer.innerHTML = timerCountdown
 
-    function countdownTimer() {
+    function countdownTimer() { // setup do timer
         countdownID = setInterval(countdown, 1000);
     }
     countdownTimer()
@@ -124,8 +123,10 @@ function gameStart() {
         timerCountdown -= 1
         timer.innerHTML = timerCountdown
 
+        // spawn dos inimigos e moedas
         enemyRNG = Math.floor(Math.random() * 3); // 0-2
         coinRNG = Math.floor(Math.random() * 7); // 0-6
+
         // cria inimigos
         if (timerCountdown > 0 && enemyRNG == 0) {
             const Enemy = {
@@ -143,7 +144,7 @@ function gameStart() {
             canvas.appendChild(Enemy.obj)
             Enemy.obj.appendChild(Enemy.vis)
             
-            enemyIDs.push(document.getElementById(Enemy.obj.id))
+            enemyIDs.push(document.getElementById(Enemy.obj.id)) // elemento vai para um array
 
             let lastEnemyID = enemyIDs.slice(-1)[0]; // seleciona a última ID dentro do array
             let lastEnemyRect = lastEnemyID.getBoundingClientRect(); // captura as coordenadas do elemento q corresponde a essa ID
@@ -170,43 +171,16 @@ function gameStart() {
             canvas.appendChild(Coin.obj)
             Coin.obj.appendChild(Coin.vis)
             
-            coinIDs.push(document.getElementById(Coin.obj.id))
+            coinIDs.push(document.getElementById(Coin.obj.id)) // elemento vai para um array
 
-            let lastCoinID = coinIDs.slice(-1)[0]; // seleciona a última ID dentro do array
+            let lastCoinID = coinIDs.slice(-1)[0]; // seleciona a última id dentro do array
             let lastCoinRect = lastCoinID.getBoundingClientRect(); // captura as coordenadas do elemento q corresponde a essa ID
 
             coinRects.push(lastCoinRect)
 
             coinID++;
         }
-        // cria projéteis (WIP!!!)
-        /*if (timerCountdown % 2 == 0) {
-            const Projectile = {
-                obj: document.createElement("div"),
-                vis: document.createElement("img")
-            }
-            for (let i = 0; i < enemyRects.length; i++){
-                // up
-                Projectile.vis.src = `assets/projectile-placeholder.jpg`;
-                Projectile.obj.setAttribute('class', 'projectile');
-                Projectile.obj.setAttribute('id', `projectile-${projectileID}`);
-
-                Projectile.obj.style.left = `calc(${enemyRects[i].x} - 1.2vw / 2)`
-                Projectile.obj.style.top = `calc(${enemyRects[i].y} - 1.2vw * 2)`
-
-                canvas.appendChild(Projectile.obj),
-                Projectile.obj.appendChild(Projectile.vis)
-
-                projectileID++
-                // right
-
-                // down
-
-                // left
-            }
-        }*/
     }
-
     gameLoop();
 }
 
@@ -215,7 +189,7 @@ function gameLoop() {
     let playerRect = Player.obj.getBoundingClientRect();
 
     // movimento do personagem com setinhas
-    if (!Player.frozen) {
+    if (!Player.frozen) { // !durante o ataque
         if (pressedKeys["ArrowUp"]) {
             previousPressedKeys = pressedKeys
             Player.y -= Player.Yvelocity
@@ -258,7 +232,7 @@ function gameLoop() {
 
     // ataque
     if (pressedKeys["Space"] && !Player.frozen){
-        Player.frozen = true
+        Player.frozen = true // jogador não pode se mover durante o ataque
 
         let Swing = {
             obj: document.createElement("div"),
@@ -267,7 +241,7 @@ function gameLoop() {
 
         Swing.obj.setAttribute('id', "swing");
 
-        switch(Player.facing){
+        switch(Player.facing){ // direção do ataque
         case 0:
             Swing.obj.style.width = "4vw"
             Swing.obj.style.height = "2.1666666vw"
@@ -314,6 +288,7 @@ function gameLoop() {
             break;
         }
 
+        // ataque destrói inimigos
         let swingRect = Swing.obj.getBoundingClientRect();
 
         if (enemyRects.length >= 1) {
@@ -334,6 +309,7 @@ function gameLoop() {
             }
         }   
 
+        // tempo mínimo do ataque
         function clearSwingTimer(){
             swingTimeout = setTimeout(clearSwing, 300)
         }
@@ -370,6 +346,7 @@ function gameLoop() {
         }
     }
 
+    // colisão dos inimigos com o jogador
     if (enemyRects.length >= 1) {
         for (let i = 0; i < enemyRects.length; i++){
             if (
@@ -387,7 +364,7 @@ function gameLoop() {
         }
     }
 
-    if (timerCountdown <= 0) {
+    if (timerCountdown <= 0) { // fim do jogo
         results();
         return;
     }
