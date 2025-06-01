@@ -32,6 +32,34 @@ const Player = {
     frozen: false
 }
 
+const ProjectileUp = {
+    obj: document.createElement("div"),
+    vis: document.createElement("img"),
+    x: 0,
+    y: 0,
+}
+
+const ProjectileLeft = {
+    obj: document.createElement("div"),
+    vis: document.createElement("img"),
+    x: 0,
+    y: 0,
+}
+
+const ProjectileDown = {
+    obj: document.createElement("div"),
+    vis: document.createElement("img"),
+    x: 0,
+    y: 0,
+}
+
+const ProjectileRight= {
+    obj: document.createElement("div"),
+    vis: document.createElement("img"),
+    x: 0,
+    y: 0,
+}
+
 let playerDefeated = false;
 
 let playerRect;
@@ -39,6 +67,7 @@ let playerRect;
 let swingTimeout;
 
 let timerCountdown = 0;
+let projectileCount = 0;
 
 let enemyRNG;
 let coinRNG;
@@ -54,13 +83,34 @@ let enemyRects = []
 let coinIDs = []
 let coinRects = []
 
+let projectileUpIDs = []
+let projectileLeftIDs = []
+let projectileDownIDs = []
+let projectileRightIDs = []
 let projectileIDs = []
+
+let projectileUpRects = []
+let projectileLeftRects = []
+let projectileDownRects = []
+let projectileRightRects = []
 let projectileRects = []
 
 // coordenadas do jogador
 function draw(){
     Player.obj.style.left = Player.x + "%"
     Player.obj.style.top = Player.y + "%"
+
+    ProjectileUp.obj.style.left = ProjectileUp.x + "%"
+    ProjectileUp.obj.style.top = ProjectileUp.y + "%"
+
+    ProjectileLeft.obj.style.left = ProjectileLeft.x + "%"
+    ProjectileLeft.obj.style.top = ProjectileLeft.y + "%"
+
+    ProjectileDown.obj.style.left = ProjectileDown.x + "%"
+    ProjectileDown.obj.style.top = ProjectileDown.y + "%"
+
+    ProjectileRight.obj.style.left = ProjectileRight.x + "%"
+    ProjectileRight.obj.style.top = ProjectileRight.y + "%"
 }
 
 function results(){
@@ -89,6 +139,22 @@ function results(){
     document.querySelectorAll('.coin').forEach(e => e.remove());
     coinIDs = []
     coinRects = []
+
+    document.querySelectorAll('.projectile-up').forEach(e => e.remove());
+    projectileUpIDs = []
+    projectileUpRects = []
+
+    document.querySelectorAll('.projectile-left').forEach(e => e.remove());
+    projectileLeftIDs = []
+    projectileLeftRects = []
+
+    document.querySelectorAll('.projectile-down').forEach(e => e.remove());
+    projectileDownIDs = []
+    projectileDownRects = []
+    
+    document.querySelectorAll('.projectile-right').forEach(e => e.remove());
+    projectileRightIDs = []
+    projectileRightRects = []
 
     if (document.getElementById("swing") != null){
         document.getElementById("swing").remove()
@@ -151,6 +217,135 @@ function gameStart() {
             enemyRects.push(lastEnemyRect)
             
             enemyID++;
+
+            const ProjectileUp = {
+                obj: document.createElement("div"),
+                vis: document.createElement("img"),
+                x: 0,
+                y: 0,
+            }
+            ProjectileUp.obj.style.width = `1.2vw`
+            ProjectileUp.obj.style.height = `100vw`
+
+            ProjectileUp.vis.src = `assets/projectile-placeholder.jpg`;
+            ProjectileUp.vis.style.width = `1.2vw`
+            ProjectileUp.vis.style.height = `100vw`
+
+            const ProjectileLeft = {
+                obj: document.createElement("div"),
+                vis: document.createElement("img"),
+                x: 0,
+                y: 0,
+            }
+            ProjectileLeft.obj.style.width = `100%`
+            ProjectileLeft.obj.style.height = `1.2vw`
+            
+            ProjectileLeft.vis.src = `assets/projectile-placeholder.jpg`;
+            ProjectileLeft.vis.style.width = `100%`
+            ProjectileLeft.vis.style.height = `1.2vw`
+
+            const ProjectileDown = {
+                obj: document.createElement("div"),
+                vis: document.createElement("img"),
+                x: 0,
+                y: 0,
+            }
+            ProjectileDown.obj.style.width = `1.2vw`
+            ProjectileDown.obj.style.height = `100vw`
+
+            ProjectileDown.vis.src = `assets/projectile-placeholder.jpg`;
+            ProjectileDown.vis.style.width = `1.2vw`
+            ProjectileDown.vis.style.height = `100vw`
+
+            const ProjectileRight = {
+                obj: document.createElement("div"),
+                vis: document.createElement("img"),
+                x: 0,
+                y: 0,
+            }
+            ProjectileRight.obj.style.width = `100vw`
+            ProjectileRight.obj.style.height = `1.2vw`
+
+            ProjectileRight.vis.src = `assets/projectile-placeholder.jpg`;
+            ProjectileRight.vis.style.width = `100vw`
+            ProjectileRight.vis.style.height = `1.2vw`
+
+            for (let i = 0; i < enemyRects.length; i++) {
+                ProjectileUp.obj.setAttribute('class', 'projectile projectile-up');
+                ProjectileUp.obj.setAttribute('id', `projectile-${projectileID}`);
+                
+                ProjectileUp.obj.style.left = `calc(${enemyIDs[i].style.left} + 1.333333333vw)`
+                ProjectileUp.obj.style.top = `calc(${enemyIDs[i].style.top} - 100vw)`
+
+                canvas.appendChild(ProjectileUp.obj)
+                ProjectileUp.obj.appendChild(ProjectileUp.vis)
+
+                projectileUpIDs.push(document.getElementById(ProjectileUp.obj.id))
+
+                console.log(projectileUpIDs)
+
+                let lastProjectileUpID = projectileUpIDs.slice(-1)[0]; // seleciona a última ID dentro do array
+                let lastProjectileUpRect = lastProjectileUpID.getBoundingClientRect(); // captura as coordenadas do elemento q corresponde a essa ID
+
+                projectileUpRects.push(lastProjectileUpRect)
+                projectileID++
+            }
+
+            for (let i = 0; i < enemyRects.length; i++) {
+                ProjectileLeft.obj.setAttribute('class', 'projectile projectile-left');
+                ProjectileLeft.obj.setAttribute('id', `projectile-${projectileID}`);
+                
+                ProjectileLeft.obj.style.left = `calc(${enemyIDs[i].style.left} - 100vw)`
+                ProjectileLeft.obj.style.top = `calc(${enemyIDs[i].style.top} + 1.333333333vw)`
+
+                canvas.appendChild(ProjectileLeft.obj)
+                ProjectileLeft.obj.appendChild(ProjectileLeft.vis)
+
+                projectileLeftIDs.push(document.getElementById(ProjectileLeft.obj.id))
+
+                let lastProjectileLeftID = projectileLeftIDs.slice(-1)[0]; // seleciona a última ID dentro do array
+                let lastProjectileLeftRect = lastProjectileLeftID.getBoundingClientRect(); // captura as coordenadas do elemento q corresponde a essa ID
+
+                projectileLeftRects.push(lastProjectileLeftRect)
+                projectileID++
+            }
+
+            for (let i = 0; i < enemyRects.length; i++) {
+                ProjectileDown.obj.setAttribute('class', 'projectile projectile-down');
+                ProjectileDown.obj.setAttribute('id', `projectile-${projectileID}`);
+                
+                ProjectileDown.obj.style.left = `calc(${enemyIDs[i].style.left} + 1.333333333vw)`
+                ProjectileDown.obj.style.top = `calc(${enemyIDs[i].style.top} + 4vw)`
+
+                canvas.appendChild(ProjectileDown.obj)
+                ProjectileDown.obj.appendChild(ProjectileDown.vis)
+
+                projectileDownIDs.push(document.getElementById(ProjectileDown.obj.id))
+
+                let lastProjectileDownID = projectileDownIDs.slice(-1)[0]; // seleciona a última ID dentro do array
+                let lastProjectileDownRect = lastProjectileDownID.getBoundingClientRect(); // captura as coordenadas do elemento q corresponde a essa ID
+
+                projectileDownRects.push(lastProjectileDownRect)
+                projectileID++
+            }
+
+            for (let i = 0; i < enemyRects.length; i++) {
+                ProjectileRight.obj.setAttribute('class', 'projectile projectile-right');
+                ProjectileRight.obj.setAttribute('id', `projectile-${projectileID}`);
+                
+                ProjectileRight.obj.style.left = `calc(${enemyIDs[i].style.left} + 4vw)`
+                ProjectileRight.obj.style.top = `calc(${enemyIDs[i].style.top} + 1.333333333vw)`
+
+                canvas.appendChild(ProjectileRight.obj)
+                ProjectileRight.obj.appendChild(ProjectileRight.vis)
+
+                projectileRightIDs.push(document.getElementById(ProjectileRight.obj.id))
+
+                let lastProjectileRightID = projectileRightIDs.slice(-1)[0]; // seleciona a última ID dentro do array
+                let lastProjectileRightRect = lastProjectileRightID.getBoundingClientRect(); // captura as coordenadas do elemento q corresponde a essa ID
+
+                projectileRightRects.push(lastProjectileRightRect)
+                projectileID++
         }
 
         // cria moedas
@@ -179,36 +374,45 @@ function gameStart() {
 
             coinID++;
         }
-        // cria projéteis (WIP!!!)
-        /*if (timerCountdown % 2 == 0) {
-            const Projectile = {
-                obj: document.createElement("div"),
-                vis: document.createElement("img")
-            }
-            for (let i = 0; i < enemyRects.length; i++){
-                // up
-                Projectile.vis.src = `assets/projectile-placeholder.jpg`;
-                Projectile.obj.setAttribute('class', 'projectile');
-                Projectile.obj.setAttribute('id', `projectile-${projectileID}`);
-
-                Projectile.obj.style.left = `calc(${enemyRects[i].x} - 1.2vw / 2)`
-                Projectile.obj.style.top = `calc(${enemyRects[i].y} - 1.2vw * 2)`
-
-                canvas.appendChild(Projectile.obj),
-                Projectile.obj.appendChild(Projectile.vis)
-
-                projectileID++
-                // right
-
-                // down
-
-                // left
-            }
-        }*/
-    }
-
     gameLoop();
-}
+}}}
+
+/*function projectileCountdownTimer() {
+        projectileCountdownID = setInterval(projectileCountdown, 1000/30);
+    }
+    projectileCountdownTimer()
+    
+    function projectileCountdown () {
+        if (projectileUpIDs.length > 0 &&
+        projectileLeftIDs.length > 0 &&
+        projectileDownIDs.length > 0 &&
+        projectileRightIDs.length > 0
+    ) {
+        projectileUpIDs.forEach((a, b, c) => {
+            console.log(projectileUpIDs[b])
+            console.log(projectileUpIDs[b].getBoundingClientRect().top)
+            projectileUpIDs[b].getBoundingClientRect().up -= 0.3 * (window.innerWidth / window.innerHeight)
+        });
+
+        projectileLeftIDs.forEach((a, b, c) => {
+            console.log(projectileLeftIDs[b])
+            console.log(projectileLeftIDs[b].getBoundingClientRect().left)
+            projectileLeftIDs[b].getBoundingClientRect().left -= 0.3;
+        });
+
+        projectileDownIDs.forEach((a, b, c) => {
+            console.log(projectileDownIDs[b])
+            console.log(projectileDownIDs[b].getBoundingClientRect().top)
+            projectileDownIDs[b].getBoundingClientRect().up += 0.3 * (window.innerWidth / window.innerHeight);
+        });
+
+        projectileRightIDs.forEach((a, b, c) => {
+            console.log(projectileRightIDs[b])
+            console.log(projectileRightIDs[b].getBoundingClientRect().left)
+            projectileRightIDs[b].getBoundingClientRect().left += 0.3
+        });
+        }
+    }*/
 
 function gameLoop() {
     // posição do jogador em pixels
@@ -328,6 +532,18 @@ function gameLoop() {
                 enemyIDs[i].remove()
                 delete enemyRects[i];
 
+                projectileUpIDs[i].remove()
+                delete projectileUpRects[i];
+
+                projectileLeftIDs[i].remove()
+                delete projectileLeftRects[i];
+
+                projectileDownIDs[i].remove()
+                delete projectileDownRects[i];
+
+                projectileRightIDs[i].remove()
+                delete projectileRightRects[i];
+
                 enemyCounter += 1
                 enemyCounterEl.innerHTML = `Inimigos: ${enemyCounter}`
                 }
@@ -347,9 +563,35 @@ function gameLoop() {
         }
     }
 
-    if (timer.innerHTML == 0) {
-        clearInterval(countdownID)
-    }
+    /*if (projectileUpIDs.length > 0 &&
+        projectileLeftIDs.length > 0 &&
+        projectileDownIDs.length > 0 &&
+        projectileRightIDs.length > 0
+    ) {
+        projectileUpIDs.forEach((a, b, c) => {
+            console.log(projectileUpIDs[b])
+            console.log(projectileUpIDs[b].getBoundingClientRect().top)
+            projectileUpIDs[b].getBoundingClientRect().up -= 0.3 * (window.innerWidth / window.innerHeight)
+        });
+
+        projectileLeftIDs.forEach((a, b, c) => {
+            console.log(projectileLeftIDs[b])
+            console.log(projectileLeftIDs[b].getBoundingClientRect().left)
+            projectileLeftIDs[b].getBoundingClientRect().left -= 0.3;
+        });
+
+        projectileDownIDs.forEach((a, b, c) => {
+            console.log(projectileDownIDs[b])
+            console.log(projectileDownIDs[b].getBoundingClientRect().top)
+            projectileDownIDs[b].getBoundingClientRect().up += 0.3 * (window.innerWidth / window.innerHeight);
+        });
+
+        projectileRightIDs.forEach((a, b, c) => {
+            console.log(projectileRightIDs[b])
+            console.log(projectileRightIDs[b].getBoundingClientRect().left)
+            projectileRightIDs[b].getBoundingClientRect().left += 0.3
+        });
+    }*/
 
     // colisão entre o jogador e as moedas individuais
     if (coinRects.length >= 1) { // executar apenas depois que tiver pelo menos uma moeda viva
@@ -387,11 +629,84 @@ function gameLoop() {
         }
     }
 
+    if (projectileUpRects.length >= 1) {
+        for (let i = 0; i < projectileUpRects.length; i++){
+            if (
+                projectileUpRects[i] != undefined &&
+                projectileUpRects[i].top < playerRect.bottom &&
+                projectileUpRects[i].left < playerRect.right &&
+                projectileUpRects[i].bottom > playerRect.top &&
+                projectileUpRects[i].right > playerRect.left
+            ) {
+                playerDefeated = true;
+                results();
+                timerCountdown = 0;
+                return;
+            }
+        }
+    }
+
+    if (projectileLeftRects.length >= 1) {
+        for (let i = 0; i < projectileLeftRects.length; i++){
+            if (
+                projectileLeftRects[i] != undefined &&
+                projectileLeftRects[i].top < playerRect.bottom &&
+                projectileLeftRects[i].left < playerRect.right &&
+                projectileLeftRects[i].bottom > playerRect.top &&
+                projectileLeftRects[i].right > playerRect.left
+            ) {
+                playerDefeated = true;
+                results();
+                timerCountdown = 0;
+                return;
+            }
+        }
+    }
+
+    if (projectileDownRects.length >= 1) {
+        for (let i = 0; i < projectileDownRects.length; i++){
+            if (
+                projectileDownRects[i] != undefined &&
+                projectileDownRects[i].top < playerRect.bottom &&
+                projectileDownRects[i].left < playerRect.right &&
+                projectileDownRects[i].bottom > playerRect.top &&
+                projectileDownRects[i].right > playerRect.left
+            ) {
+                playerDefeated = true;
+                results();
+                timerCountdown = 0;
+                return;
+            }
+        }
+    }
+
+    if (projectileRightRects.length >= 1) {
+        for (let i = 0; i < projectileRightRects.length; i++){
+            if (
+                projectileRightRects[i] != undefined &&
+                projectileRightRects[i].top < playerRect.bottom &&
+                projectileRightRects[i].left < playerRect.right &&
+                projectileRightRects[i].bottom > playerRect.top &&
+                projectileRightRects[i].right > playerRect.left
+            ) {
+                playerDefeated = true;
+                results();
+                timerCountdown = 0;
+                return;
+            }
+        }
+    }
+
+    if (timer.innerHTML == 0) {
+        clearInterval(countdownID)
+    }
+
     if (timerCountdown <= 0) {
         results();
         return;
     }
 
     draw();
+    /*projectileCountdown();*/
     requestAnimationFrame(gameLoop);
 }
