@@ -78,6 +78,7 @@ function results(){
     } else {
         document.getElementById("msg").innerHTML = `Você morreu!`
         document.getElementById("msg").style.color = `#b82e00`
+        playerDefeated = false;
     }
 
     document.querySelectorAll('.enemy').forEach(e => e.remove());
