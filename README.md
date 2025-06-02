@@ -72,6 +72,7 @@ o jogo usa o mouse na navegação das telas, mas tirando isso, é controlado com
 ## 🚧 melhorias futuras
 
 - melhorar/otimizar o spawn de inimigos e moedas (código meio porco, inimigos podem nascer em cima do jogador)
+- corrigir problemas no movimento diagonal do jogador
 - fazer com que os inimigos lancem projéteis móveis
 - corrigir crescente instabilidade do timer da segunda execução em diante
 - introduzir um sistema de fps (provavelmente resolveria esses dois últimos problemas)
