@@ -1,5 +1,3 @@
-// console.log(window.innerWidth, window.innerHeight)
-
 let pressedKeys = [];
 let previousPressedKeys = [];
 
@@ -54,14 +52,12 @@ let enemyRects = [] // colisões
 let coinIDs = []
 let coinRects = []
 
-// coordenadas do jogador
-function draw(){
+function draw(){ // coordenadas do jogador
     Player.obj.style.left = Player.x + "%"
     Player.obj.style.top = Player.y + "%"
 }
 
-// game over ou vitória
-function results(){
+function results(){ // game over ou vitória
     Player.obj.style.display = `none`;
     ui.style.display = `none`;
 
@@ -128,8 +124,7 @@ function gameStart() { // sistemas que não podem ser repetidos instantaneamente
         enemyRNG = Math.floor(Math.random() * 2); // 0-1
         coinRNG = Math.floor(Math.random() * 6); // 0-5
 
-        // cria inimigos
-        if (timerCountdown > 0 && enemyRNG == 0) {
+        if (timerCountdown > 0 && enemyRNG == 0) { // cria inimigos
             const Enemy = {
                 obj: document.createElement("div"),
                 vis: document.createElement("img")
@@ -155,8 +150,7 @@ function gameStart() { // sistemas que não podem ser repetidos instantaneamente
             enemyID++;
         }
 
-        // cria moedas
-        if (timerCountdown > 0 && coinRNG == 0) {
+        if (timerCountdown > 0 && coinRNG == 0) { // cria moedas
             const Coin = {
                 obj: document.createElement("div"),
                 vis: document.createElement("img")
@@ -186,8 +180,7 @@ function gameStart() { // sistemas que não podem ser repetidos instantaneamente
 }
 
 function gameLoop() {
-    // posição do jogador em pixels
-    let playerRect = Player.obj.getBoundingClientRect();
+    let playerRect = Player.obj.getBoundingClientRect(); // posição do jogador em pixels
 
     // movimento do personagem com setinhas
     if (!Player.frozen) { // !durante o ataque
@@ -231,8 +224,7 @@ function gameLoop() {
         Player.y = 100 - Player.obj.style.width * 2
     }
 
-    // ataque
-    if (pressedKeys["Space"] && !Player.frozen){
+    if (pressedKeys["Space"] && !Player.frozen){ // ataque
         Player.frozen = true // jogador não pode se mover durante o ataque
 
         let Swing = {
@@ -289,8 +281,7 @@ function gameLoop() {
             break;
         }
 
-        // ataque destrói inimigos
-        let swingRect = Swing.obj.getBoundingClientRect();
+        let swingRect = Swing.obj.getBoundingClientRect(); // ataque destrói inimigos
 
         if (enemyRects.length >= 1) {
         for (let i = 0; i < enemyRects.length; i++){
@@ -310,8 +301,7 @@ function gameLoop() {
             }
         }   
 
-        // tempo mínimo do ataque
-        function clearSwingTimer(){
+        function clearSwingTimer(){ // tempo mínimo do ataque
             swingTimeout = setTimeout(clearSwing, 300)
         }
 
@@ -347,8 +337,7 @@ function gameLoop() {
         }
     }
 
-    // colisão dos inimigos com o jogador
-    if (enemyRects.length >= 1) {
+    if (enemyRects.length >= 1) { // colisão dos inimigos com o jogador
         for (let i = 0; i < enemyRects.length; i++){
             if (
                 enemyRects[i] != undefined &&
