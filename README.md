@@ -33,7 +33,7 @@ tríade básica de desenvolvimento web (HTML/CSS/JavaScript)
 
 o jogo usa o mouse na navegação das telas, mas tirando isso, é controlado com o teclado
 
-- **setinhas** - caminhar
+- **setinhas** ⬅⬆⬇➡ - caminhar
 
 - **espaço** - atacar
 
