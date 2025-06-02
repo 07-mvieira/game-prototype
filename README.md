@@ -73,8 +73,9 @@ o jogo usa o mouse na navegação das telas, mas tirando isso, é controlado com
 
 - melhorar/otimizar o spawn de inimigos e moedas (código meio porco, inimigos podem nascer em cima do jogador)
 - corrigir problemas no movimento diagonal do jogador
+- separar o timer em três (tempo, rng dos inimigos + moedas)
 - fazer com que os inimigos lancem projéteis móveis
-- corrigir crescente instabilidade do timer da segunda execução em diante
+- corrigir instabilidade do timer (mais notável da segunda execução em diante
 - introduzir um sistema de fps (provavelmente resolveria esses dois últimos problemas)
 
 <a name="creditos"/>
