@@ -64,8 +64,8 @@ o jogo usa o mouse na navegação das telas, mas tirando isso, é controlado com
 ![Captura de tela 2025-06-01 013936](https://github.com/user-attachments/assets/8cdc7f7b-6b4c-402a-9b63-b9faca12786f)
 ![Captura de tela 2025-06-01 013953](https://github.com/user-attachments/assets/b0afd45b-7422-40e1-80c8-833df68b551d)
 ![Captura de tela 2025-06-01 014205](https://github.com/user-attachments/assets/53192b3e-77bf-4b06-a1c0-3cc9f5b7ad71)
-![Captura de tela 2025-06-01 014244](https://github.com/user-attachments/assets/d1d664a7-387b-4540-8de8-927e58f7b24b)
 ![Captura de tela 2025-06-01 014320](https://github.com/user-attachments/assets/cdef4186-3e7b-4968-bab4-d814b37c3c51)
+![Captura de tela 2025-06-01 014244](https://github.com/user-attachments/assets/d1d664a7-387b-4540-8de8-927e58f7b24b)
 
 <a name="melhorias"/>
 
