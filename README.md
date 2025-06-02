@@ -1,4 +1,4 @@
-# 🟦squarena🟧
+# 🟦squarena🟥
 jogo singleplayer simples de sobrevivência
 
 ## 🧾 sumário
@@ -72,7 +72,7 @@ o jogo usa o mouse na navegação das telas, mas tirando isso, é controlado com
 ## 🚧 melhorias futuras
 
 - fazer com que os inimigos lancem projéteis móveis
-- melhorar o spawn de inimigos (eles podem nascer em cima do jogador sem que ele possa fazer nada)
+- melhorar/otimizar o spawn de inimigos e moedas (código meio porco, inimigos podem nascer em cima do jogador)
 - corrigir crescente instabilidade do timer da segunda execução em diante
 
 <a name="creditos"/>
